@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>
+        <%= title %>
+    </title>
+    <style>
+
+    </style>
+    <link rel="stylesheet" href="/stylesheets/bootstrap.min.css" />
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+
+    <body>
+            <table>
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Characters</th>
+                        <th scope="col">Tone</th>
+                        <th scope="col">PrettyPinyin</th>
+                        <th scope="col">Definitions</th>
+                        <th scope="col">Submit</th>
+                        <th scope="col">Delete</th>
+                    </tr>
+                </thead>
+                <tr>
+                    <tbody>
+            <% for (var i=0; i < card.length; i++) { %>
+
+    <form action="/decks/edit/<%= deck._id %>/<%= card[i]._id %>" method="POST" id="editCardForm<%= card[i]._id %>" class="editCardForm" style="" >
+        <input type="hidden" name="deck" value=<%=deck._id %>> </input>
+        <input type="hidden" name="label" value=<%=card[i].label %>> </input>
+                    <th scope="row"><%= i + 1%></th>
+
+
+                    <!-- characters -->
+                <td>
+                    <%#if (card[i].tone.length > 0) { %>
+
+                    <%# for (var t=0; t < card[i].tone.length; t++) {%>
+                    <!-- <input type="text" name="characters" value=<%= card[i].characters %>> </input>
+                        <%#}%>
+                        </br> -->
+                        <%# for (var t=0; t < card[i].tone.length; t++) {%>
+                        <!-- <p class="color<#%=card[i].tone[t]%>">
+                            <%#= card[i].characters[t] %>
+                        </p> -->
+                        <%#}%>
+
+                            <!-- <#% } else { %> -->
+
+                                <%# for (var t=0; t < card[i].characters.length; t++) {%>
+                    <input type="text" name="characters" value=<%= card[i].characters %>> </input>
+                                    <%#}%>
+
+                                        <%#}%>
+
+                </td>
+                
+                <!-- Tone -->
+                <td>
+                    <%if (card[i].tone.length > 0) { %>
+
+                    <input type="text" name="tone" value="<%= card[i].tone %>"> </input>
+
+                            <% } else { %>
+
+                    <input type="text" name="tone" placeholder="ie - 134" %>> </input>
+                            <%}%>
+                </td>
+
+                <!-- PrettyPinyin -->
+                <td>
+                    <input type="text" name="prettypinyin" value="<%= card[i].prettypinyin%>"> </input>
+                </td>
+
+                <!-- Definition -->
+                <td>
+                    <input type="textarea" form="editCardForm<%= card[i]._id %>"  name="definition" rows="2" value="<%= card[i].definition%>">
+                </input>
+                </td>
+                <!-- Submit -->
+                <td>
+                    <input type="submit" value="Submit">
+                </td>
+            </form>
+            <!-- Delete -->
+                <td>
+                <form action="/decks/delete/<%= deck._id +"/"+ card[i]._id %>" method="POST" id="deleteCardForm<%= card[i]._id %>" class="deleteCardForm"> 
+            <button type="submit" onclick="return confirm('Are you sure?')" >Delete</button></form>
+            </td>            
+        </tr>
+            <%}%>
+                                    </tbody>
+        </table>
+    </body>
+
+</html>

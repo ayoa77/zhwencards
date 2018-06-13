@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <style>
+    </style>
+    <link rel="stylesheet" href="/stylesheets/bootstrap.min.css" />
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+<body>
+         <%if (card) { var page = 4 %>
+        <% for (var i=0; i < card.length; i++) { var pinyin = ''%>
+<%#if ( i === 0 || i%5 === 0){ %>
+  <div class="container"> 
+    <div class="row">
+      
+      <div class="Col-xs-6 second-class">
+          
+        <%if (card[i].tone.length > 0) { %>
+          
+        <% for (var t=0; t < card[i].tone.length; t++) {%>
+       <p class ="color<%=card[i].tone[t]%> front"><%= card[i].characters[t] %></p>
+        <%}%>
+        </div>
+          
+        <% } else { %>
+
+          <% for (var t=0; t < card[i].characters.length; t++) {%>
+       <p class ="front"><%= card[i].characters[t] %></p>
+          <%}%>
+      
+        </div>
+        <%}%>
+      
+      <div class="Col-xs-6 second-class">
+
+          <%if (card[i].tone.length > 0) { %>
+
+      
+          <% for (var t=0; t < card[i].tone.length; t++) {%>
+       <p class ="color<%=card[i].tone[t]%> back"><%= card[i].prettypinyin[t]%></p>
+          <%}%> <br />
+
+
+
+          <% for (var d=0;d < card[i].definition.length; d++) {%>
+          <p class ="back definition"><%= card[i].definition[d] %></p> 
+          <br />
+          <%}%>
+      </div>
+
+        <% } else { %>
+
+
+        <% for (var t=0; t < card[i].prettypinyin.length; t++) {%>
+       <p class ="back"><%= card[i].prettypinyin[t]%></p>
+          <%}%> <br />
+       
+          <p class ="back definition"><%#= card[i].definition[d] %></p>
+        <br />
+      </div>
+      <%}%>
+
+ 
+      
+  <%}%>
+  <%}%>
+</body>
+</html>

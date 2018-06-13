@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    <h1><%= title %></h1>
+    <p>Welcome to <%= title %></p>
+    <a href="/decks">Decks</a>  <a href=/decks/newdeck>Create Deck</a> 
+
+    <table>
+      <%if (decks) { %>
+        <% for (var i=0; i < decks.length; i++) {%>
+        <tr>
+          <td>
+            <a href="/decks/<%= decks[i]._id %>"> <%= decks[i].title %></a>
+            <a href="/decks/tones/<%= decks[i]._id %>"> tone practice</a>
+              <a href="/decks/<%=decks[i]._id%>/new">New Cards</a>
+              <a href="/decks/edit/<%=decks[i]._id%>">Edit Cards</a>
+              <a href="/decks/print/<%=decks[i]._id%>/<%=decks[i].name%>">print</a>
+              <form action="/decks/<%= decks[i]._id %>"method="DELETE" id="deleteDeckForm<%= decks[i]._id %>" class="deleteDeckForm" >
+              <button type="submit">Delete</button></form>
+          </td>
+          <td>
+            <%= decks[i].gramorvocab %>
+          </td>
+        </tr>
+     <%}%>
+      <%}%>
+  </table>
+  </body>
+</html>

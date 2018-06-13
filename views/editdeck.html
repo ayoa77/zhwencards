@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>
+        <%= title %>
+    </title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+</head>
+
+<body>
+    <div class="modal-login-right">
+        <div class="title-container">
+            <div class="modal-title">Create a Deck</div>
+        </div>
+
+        <div class="form-box">
+            <div class="user-edit-box" style="height: 100%;">
+                <form action="/decks" id="createDeckForm" class="createDeckForm" method="POST">
+
+                    <input type="text" name="title" placeholder="Title"></input>
+
+                    <input type="text" name="gramorvocab" placeholder="grammar or vocab"></input>
+                    <br>
+                    <button id="createDeckButton" class="createDeckButton" action="submit"> Submit </button>
+
+                </form>
+
+
+            </div>
+        </div>
+
+    </div>
+</body>
+
+</html>

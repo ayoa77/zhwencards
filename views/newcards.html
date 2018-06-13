@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+
+<body>
+        <div class="modal-login-right">
+            <div class="title-container">
+                <div class="modal-title">Input your words separated by spaces</div>
+            </div>
+
+            <div class="form-box">
+                <div class="user-edit-box" style="height: 100%;">
+                    <form action="/decks/<%=deck._id %>/cards" id="addCardsForm" class="addCardsForm" method="POST" style="width: 80%;">
+                        <input type="hidden" name="deck" value=<%=deck._id %>> </input>
+
+                        <textarea form="addCardsForm" name="characters" placeholder="中文字" style="height: 150px; width: 75%; font-size:24px"></textarea>
+
+                        <br>
+                        <input type="text" name="label" value=<%deck.title %>> </input>
+                        <button id="addCardsButton" class="addCardsButton" action="submit" onclick="return confirm('Are you sure?')"> Submit </button>
+
+                    </form>
+        
+
+                </div>
+            </div>
+
+        </div>
+</body>
+</html>

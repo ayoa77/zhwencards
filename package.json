@@ -1,0 +1,23 @@
+{
+  "name": "zhwenfcards",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "nodemon app.js"
+  },
+  "dependencies": {
+    "cookie-parser": "~1.4.3",
+    "debug": "~2.6.9",
+    "ejs": "~2.5.7",
+    "express": "~4.16.0",
+    "hanzi": "^2.1.0",
+    "http-errors": "~1.6.2",
+    "mongoose": "^5.0.11",
+    "morgan": "~1.9.0",
+    "node-phantom": "^0.2.5",
+    "phantom": "^4.0.12",
+    "phantomjs": "^2.1.7",
+    "pinyin-string": "^1.0.0",
+    "url2pdf": "^0.4.7"
+  }
+}

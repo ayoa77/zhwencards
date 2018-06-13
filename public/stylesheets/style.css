@@ -1,0 +1,133 @@
+@page {
+  /* dimensions for the whole page */
+  size: A4;
+  margin: 0px;
+}
+
+html {
+  /* off-white, so body edge is visible in browser */
+  background: white;
+}
+
+body {
+  /* A4 dimensions */
+  padding: 0px;
+  padding-left: 9 px;
+  padding-right: 9 px;
+  height: 210mm;
+  width: 297mm;
+  margin: 9px;
+}
+
+.back.definition{
+  width: 100%;
+}
+
+.item:nth-child(3n-1) {
+  background: silver;
+}
+
+.breaker {
+  display: none;
+}
+
+.breaker:nth-child(3n) {
+  display: block;
+  width: 100%;
+  height: 0;
+}
+.back{
+  display: block;
+  font-size: 16px;
+}
+.front{
+  display: block;
+  font-size: 72px;
+
+}
+.color1{
+  color:#4285F4;
+}
+.color2 {
+  color: #0F9D58;
+}
+.color3 {
+  color: #F4B400;
+}
+.color4 {
+  color: #DB4437;
+}
+.color5 {
+  color: #656C77;
+}
+.a4-cards {
+  padding: 9px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.second-class {
+  border-top: 1px dotted gray;
+  height: 127.283464592px;
+  width: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-flow: row wrap;
+  overflow: hidden;
+}
+
+.bordered {
+  border-right: 1px dotted gray;
+}
+
+
+.index-card {
+  font-size: 72px;
+  height: calc(8.27px * 72px);
+  width: calc(11.69px * 72px);
+  padding: 9px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+/* fill half the height with each face */
+
+.face {
+  height: 50%;
+  width: 100%;
+  position: relative;
+}
+
+/* the back face */
+
+.face-back {
+  background: #f6f6f6;
+}
+
+/* the front face */
+
+.face-front {
+  background: #fff;
+}
+
+/* an image that fills the whole of the front face */
+
+.face-front img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+}
+body {
+
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+a {
+  color: #00B7FF;
+}
