@@ -6,6 +6,8 @@
     "start": "nodemon app.js"
   },
   "dependencies": {
+    "client-sessions": "^0.8.0",
+    "connect-flash": "^0.1.1",
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.9",
     "ejs": "~2.5.7",
@@ -18,6 +20,9 @@
     "phantom": "^4.0.12",
     "phantomjs": "^2.1.7",
     "pinyin-string": "^1.0.0",
+    "pm2": "^2.10.4",
+    "pug": "^2.0.3",
+    "save": "^2.3.2",
     "url2pdf": "^0.4.7"
   }
 }

@@ -1,0 +1,26 @@
+doctype html
+head
+  include ./partials/_head.pug
+    body
+      include ./partials/_nav.pug
+    .main
+      include ./partials/_alert.pug
+        .modal-login-right
+          .title-container
+            .page-header
+              h1 Create a Deck
+
+            .modal-title 
+          .form-box
+            .user-edit-box(style='height: 100%;')
+              form#createDeckForm.createDeckForm(action='/flashcards', method='POST')
+                .row(styles= "padding-bottom:15px;")
+                  .col-xs-4
+                  .col-xs-4
+                    input.form-control(type='text', name='title', placeholder='Title')
+                .row(styles= "padding-top:15px;")
+                  .col-xs-4
+                  .col-xs-4(styles= "padding-top:15px;")
+                    input.form-control(type='text', name='gramorvocab', styles= "padding-top:15px;", placeholder='grammar or vocab')
+                    br
+                    button#createDeckButton.createDeckButton.btn.btn-info.pull-right(action='submit')  Submit 

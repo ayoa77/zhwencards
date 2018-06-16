@@ -1,0 +1,17 @@
+head
+  include ./partials/_head.pug
+    include ./partials/_nav.pug
+    .main
+      // Content Here
+    include ./partials/_alert.pug
+
+      .modal-login-right
+        .title-container
+          .modal-title Create a Deck
+        .form-box
+          .user-edit-box(style='height: 100%;')
+            form#createDeckForm.createDeckForm(action='/flashcards', method='POST')
+              input(type='text', name='title', placeholder='Title')
+              input(type='text', name='gramorvocab', placeholder='grammar or vocab')
+              br
+              button#createDeckButton.createDeckButton(action='submit')  Submit 

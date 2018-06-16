@@ -1,0 +1,26 @@
+<html>
+
+<head>
+    include ./partials/_head.pug
+</head>
+
+<body>
+        <div class="main">
+            <!-- Content Here -->
+            include ./partials/_alert.pug
+                .page-header
+                    h1 Welcome, Please Login Below
+                .container
+                    .row
+                        .col-xs-4
+                        .col-xs-4
+                            <form action="/auth/login" , method="POST" id="loginForm">
+                                input.form-control( type="hidden" , name="_csrf" , value=csrfToken)
+                                input.form-control( type="email" name="email" placeholder="email" required=true)
+                                input.form-control( type="password" name="password" placeholder="password" required=true)
+                                button.form-control.btn.btn-info Login                      
+                            </form>
+        </div>
+</body>
+
+</html>

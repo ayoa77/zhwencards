@@ -1,0 +1,46 @@
+<html>
+
+<head>
+    include ./partials/_head.pug
+</head>
+
+<body>
+    include ./partials/_nav.pug
+    <div class="main">
+        <!-- Content Here -->
+        include ./partials/_alert.pug
+        table
+            thead
+                tr
+                    th(scope='col') #
+                    th(scope='col') Characters
+                    th(scope='col') Tone
+                    th(scope='col') PrettyPinyin
+                    th(scope='col') Definitions
+                    th(scope='col') Submit
+                    th(scope='col') Delete
+            tr
+                tbody
+                    for card, index in cards
+                        tr
+                            form.editCardForm(action=`/flashcards/edit/${deck._id}/${card._id}`, method='POST', id=`editCardForm${card._id}`, style='')
+                                input(type='hidden', name='deck', value='#{deck._id}')
+                                input(type='hidden', name='label', value='#{card.label}')
+                                td
+                                    p #{index + 1}
+                                td
+                                    input.form-control(type='text', name='characters', value=card.characters)
+                                td
+                                    input.form-control(type='text', name='tone', value=card.tone)
+                                td
+                                    input.form-control(type='text', name='prettypinyin', value=card.prettypinyin)
+                                td
+                                    textarea.form-control(type='textarea', form=`editCardForm ${card._id}`, name='definition', rows='3', value=card.definition)
+                                        != card.definition
+                                td
+                                    input.form-control.btn-info(type='submit', value='Submit')
+                                td
+                                    form(action=`/flashcards/delete/${deck._id}/${card._id}`, method="POST" id="deleteCardForm")
+                                        button.form-control.btn-danger(type='delete') × 
+
+

@@ -5,7 +5,6 @@ const mongoose = require("mongoose");
 const cjst = require('../helpers/cjst/lib/cjst');
 const Card = require('../models/cards');
 const Deck = require('../models/deck');
-const ejsLint = require('ejs-lint');
 // var dom = require('express-dom')
 // var pdf = require('express-dom-pdf');
 var app = require('express')();
@@ -17,14 +16,15 @@ var url2pdf = require("url2pdf");
 router.get('/print/:deckId/:name', function(req,res,next){
   id = req.params.deckId
   path = "/User/ayoamadi/Documents/flashcards/" + req.params.name + ".pdf"
-  url = "http://localhost:3000/decks/" + id;
+  url = "http://127.0.0.1:3001/flashcards/" + id;
   url2pdf.renderPdf(url)
     .then(function (path) {
       console.log(path)
       res.sendFile(path);
     })
     .catch(function (err) {
-      res.status(500).json(err);
+      req.flash('error', err.message || 'something went wrong, please try again');
+      res.redirect('back');
     })
   })
 // phantom.create(function (error, ph) {
@@ -50,7 +50,6 @@ hanzi.start();
 router.get('/', function(req, res, next) {
 
   Deck.find()
-    .select("title gramorvocab createdAt")
     .exec()
     .then(docs => {
       const response = {
@@ -65,28 +64,21 @@ router.get('/', function(req, res, next) {
             createdAt: doc.createdAt,
             
             _id: doc._id,
-            
-            request: {
-              type: "GET",
-              url: "http://localhost:3000/decks/" + doc._id
-            }
-          };
+                      };
         })
       }
       console.log(docs);
-      //   if (docs.length >= 0) {
+        if (docs.length >= 0) {
       res.render('decks', {title: 'Decks', decks: docs} );
-            //   } else {
-      //       res.status(404).json({
-      //           message: 'No entries found'
-      //       });
-      //   }
+              } else {
+          req.flash('error', err.message || 'no entries found');
+          res.redirect('back');
+        }
     })
     .catch(err => {
       console.log(err);
-      res.status(500).json({
-        error: err
-      });
+      req.flash('error', err.message || 'something went wrong, please try again');
+      res.redirect('back');
     });
 });
 
@@ -119,18 +111,12 @@ router.post('/', function (req, res, next) {
 
             createdAt: result.createdAt,
 
-            request: {
-              type: "GET",
-              url: "http://localhost:3000/decks/" + result._id
-            }
           }
         });
       })
       .catch(err => {
-        console.log(err);
-        res.status(500).json({
-          error: err
-        });
+        req.flash('error', err.message || 'something went wrong, please try again');
+        res.redirect('back');
       });
 });
 
@@ -138,14 +124,12 @@ router.get('/:deckId', function (req, res, next){
   body = {}
   const id = req.params.deckId;
   Deck.findById(id)
-    .select("title gramorvocab createdAt")
     // .populate(cards)
     .exec()
     .then(deck => {
       body.deck = deck
       console.log("From database", body.deck);
       Card.find({deck: id})
-      .select("_id characters prettypinyin tone zhuyin definition")
       .then(card => {
         body.card = card
       if (body) {
@@ -153,20 +137,21 @@ router.get('/:deckId', function (req, res, next){
           title: body.deck.title,
           deck: body.deck,
           card: body.card,
-          request: {
-            type: "GET",
-            url: "http://localhost:3000/decks/" + body.deck._id
-          }
+
         });
       } else {
-        res
-          .status(404)
-          .json({ message: "No valid entry found for provided ID" });
+        // res
+        //   .status(404)
+        //   .json({ message: "No valid entry found for provided ID" });
+        req.flash('error', err.message || 'no vaild entry for provided ID');
+        res.redirect('back');
+
       }
     })
     .catch(err => {
       console.log(err);
-      res.status(500).json({ error: err });
+      req.flash('error', err.message || 'something went wrong, please try again');
+      res.redirect('back');
     });
   })
 })
@@ -175,14 +160,12 @@ router.get('/tones/:deckId', function (req, res, next) {
   body = {}
   const id = req.params.deckId;
   Deck.findById(id)
-    .select("title gramorvocab createdAt")
     // .populate(cards)
     .exec()
     .then(deck => {
       body.deck = deck
       console.log("From database", body.deck);
       Card.find({ deck: id })
-        .select("_id characters prettypinyin tone zhuyin definition")
         .then(card => {
           body.card = card
           if (body) {
@@ -190,20 +173,20 @@ router.get('/tones/:deckId', function (req, res, next) {
               title: body.deck.title,
               deck: body.deck,
               card: body.card,
-              request: {
-                type: "GET",
-                url: "http://localhost:3000/decks/" + body.deck._id
-              }
             });
           } else {
-            res
-              .status(404)
-              .json({ message: "No valid entry found for provided ID" });
+            // res
+            //   .status(404)
+            //   .json({ message: "No valid entry found for provided ID" });
+            req.flash('error', err.message || 'no valid entry found for provided ID');
+            res.redirect('back');
+
           }
         })
         .catch(err => {
           console.log(err);
-          res.status(500).json({ error: err });
+          req.flash('error', err.message || 'something went wrong, please try again');
+          res.redirect('back');
         });
     })
 })
@@ -212,14 +195,12 @@ router.get('/tones/:deckId', function (req, res, next) {
   body = {}
   const id = req.params.deckId;
   Deck.findById(id)
-    .select("title gramorvocab createdAt")
     // .populate(cards)
     .exec()
     .then(deck => {
       body.deck = deck
       console.log("From database", body.deck);
       Card.find({ deck: id })
-        .select("_id characters prettypinyin tone zhuyin definition")
         .then(card => {
           body.card = card
           if (body) {
@@ -227,20 +208,20 @@ router.get('/tones/:deckId', function (req, res, next) {
               title: body.deck.title,
               deck: body.deck,
               card: body.card,
-              request: {
-                type: "GET",
-                url: "http://localhost:3000/decks/" + body.deck._id
-              }
             });
           } else {
-            res
-              .status(404)
-              .json({ message: "No valid entry found for provided ID" });
+            // res
+            //   .status(404)
+            //   .json({ message: "No valid entry found for provided ID" });
+            req.flash('error', err.message || 'No valid entry found for provided ID');
+            res.redirect('back');
+
           }
         })
         .catch(err => {
           console.log(err);
-          res.status(500).json({ error: err });
+          req.flash('error', err.message || 'something went wrong, please try again');
+          res.redirect('back');
         });
     })
 })
@@ -249,14 +230,12 @@ router.get('/tones/:deckId', function (req, res, next) {
   body = {}
   const id = req.params.deckId;
   Deck.findById(id)
-    .select("title gramorvocab createdAt")
     // .populate(cards)
     .exec()
     .then(deck => {
       body.deck = deck
       console.log("From database", body.deck);
       Card.find({ deck: id })
-        .select("_id characters prettypinyin tone zhuyin definition")
         .then(card => {
           body.card = card
           if (body) {
@@ -264,20 +243,20 @@ router.get('/tones/:deckId', function (req, res, next) {
               title: body.deck.title,
               deck: body.deck,
               card: body.card,
-              request: {
-                type: "GET",
-                url: "http://localhost:3000/decks/" + body.deck._id
-              }
             });
           } else {
-            res
-              .status(404)
-              .json({ message: "No valid entry found for provided ID" });
+            // res
+            //   .status(404)
+            //   .json({ message: "No valid entry found for provided ID" });
+            req.flash('error', err.message || 'No valid entry found for provided ID');
+            res.redirect('back');
+
           }
         })
         .catch(err => {
           console.log(err);
-          res.status(500).json({ error: err });
+          req.flash('error', err.message || 'something went wrong, please try again');
+          res.redirect('back');
         });
     })
 })
@@ -288,14 +267,12 @@ router.get('/edit/:deckId', function (req, res, next) {
   body = {}
   const id = req.params.deckId;
   Deck.findById(id)
-    .select("title gramorvocab createdAt")
     // .populate(cards)
     .exec()
     .then(deck => {
       body.deck = deck
       console.log("From database", body.deck);
       Card.find({ deck: id })
-        .select("_id characters prettypinyin tone zhuyin definition")
         .then(card => {
 // console.log(card[22].prettypinyin.toString().replace(/,/g, ' '))
 const response = {
@@ -314,26 +291,25 @@ const response = {
               };
             })
           }
-
+          // console.log(response)
           if (response) {
             res.render('editcards', {
               title: response.deck.title,
               deck: response.deck,
-              card: response.card,
-              request: {
-                type: "GET",
-                url: "http://localhost:3000/decks/" + body.deck._id
-              }
+              cards: response.card
             });
           } else {
-            res
-              .status(404)
-              .json({ message: "No valid entry found for provided ID" });
+            // res
+            //   .status(404)
+            //   .json({ message: "No valid entry found for provided ID" });
+            req.flash('error', err.message || 'no valid entry found for provided ID');
+            res.redirect('back');
           }
         })
         .catch(err => {
           console.log(err);
-          res.status(500).json({ error: err });
+          req.flash('error', err.message || 'something went wrong, please try again');
+          res.redirect('back');
         });
     })
 })
@@ -358,14 +334,13 @@ console.log(req.body)
         .exec()
         .then(result => {
           console.log(result);
-          res.redirect("/decks/edit/" + deckid)
+          res.redirect("/flashcards/edit/" + deckid)
         });
     })
     .catch(err => {
       console.log(err);
-      res.status(500).json({
-        error: err
-      });
+      req.flash('error', err.message || 'something went wrong, please try again');
+      res.redirect('back');
     });
 });
 
@@ -389,18 +364,14 @@ router.patch('/:deckId', function(req, res, next){
           console.log(result);
           res.status(200).json({
             message: "Report updated",
-            request: {
-              type: "GET",
-              url: "http://localhost:3000/decks/" + result.id
-            }
           });
         });
     })
     .catch(err => {
       console.log(err);
-      res.status(500).json({
-        error: err
-      });
+      req.flash('error', err.message || 'something went wrong, please try again');
+      res.redirect('back');
+
     });
 });
 
@@ -412,13 +383,12 @@ const id = req.params.deckId;
 Deck.findByIdAndRemove(id)
   .exec()
   .then(result => {
-    res.redirect('/decks');
+    res.redirect('/flashcards');
   })
   .catch(err => {
     console.log(err);
-    res.status(500).json({
-      error: err
-    });
+    req.flash('error', err.message || 'something went wrong, please try again');
+    res.redirect('back');
   });
 })
 
@@ -431,13 +401,12 @@ router.post('/delete/:deckId/:cardId?', function (req, res, next) {
   Card.findByIdAndRemove(cardid)
     .exec()
     .then(result => {
-      res.redirect("/decks/edit/" + deckid)
+      res.redirect("/flashcards/edit/" + deckid)
     })
     .catch(err => {
       console.log(err);
-      res.status(500).json({
-        error: err
-      });
+      req.flash('error', err.message || 'something went wrong, please try again');
+      res.redirect('back');
     });
 });
 
@@ -445,7 +414,6 @@ router.post('/delete/:deckId/:cardId?', function (req, res, next) {
 router.get('/:deckId/new', function (req, res, next) {
   const id = req.params.deckId;
   Deck.findById(id)
-    .select("title gramorvocab createdAt")
     // .populate(cards)
     .exec()
     .then(doc => {
@@ -454,20 +422,20 @@ router.get('/:deckId/new', function (req, res, next) {
         res.render('newcards', {
           title: doc.title,
           deck: doc,
-          request: {
-            type: "GET",
-            url: "http://localhost:3000/decks/" + doc._id
-          }
         });
       } else {
-        res
-          .status(404)
-          .json({ message: "No valid entry found for provided ID" });
+        // res
+        //   .status(404)
+        //   .json({ message: "No valid entry found for provided ID" });
+        req.flash('error', err.message || 'no valid entry for provided ID');
+        res.redirect('back');
+
       }
     })
     .catch(err => {
       console.log(err);
-      res.status(500).json({ error: err });
+      req.flash('error', err.message || 'something went wrong, please try again');
+      res.redirect('back');
     });
 
 });
@@ -515,13 +483,13 @@ if(zi) {
 
 Card.create(cards, function (err, results) {
   if (err) {
-    return res.status(401).json({
-      message: err
-    });
-
+          console.log(err);
+          req.flash('error', err.message || 'something went wrong, please try again');
+          res.redirect('back');
   } else {
     console.log(results)
-    res.send(results);
+      req.flash('message','Your card has been added to ' + deck.name);
+      res.redirect('/flashcards/edit/' + deck );
   }
 
   });

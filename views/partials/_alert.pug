@@ -1,0 +1,10 @@
+if (_flashMessage.length > 0)
+    .alert.alert-success.alert-dismissable
+        a.close.pull-left(href='#', data-dismiss='alert', aria-label='close')
+            = _flashMessage
+        a.close.pull-right(href='#', data-dismiss='alert', aria-label='close') ×
+if (_flashError.length > 0)
+    .alert.alert-danger.alert-dismissable
+        a.close.pull-left(href='#', data-dismiss='alert', aria-label='close')
+            = _flashError
+        a.close.pull-right(href='#', data-dismiss='alert', aria-label='close') ×

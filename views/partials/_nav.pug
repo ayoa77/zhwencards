@@ -1,0 +1,22 @@
+nav.navbar.navbar-inverse.sidebar(role='navigation')
+    .container-fluid
+        // Brand and toggle get grouped for better mobile display
+        .navbar-header
+            button.navbar-toggle(type='button', data-toggle='collapse', data-target='#bs-sidebar-navbar-collapse-1')
+                span.sr-only Toggle navigation
+                span.icon-bar
+                span.icon-bar
+                span.icon-bar
+            a.navbar-brand(href='#') 中文flashcards
+        // Collect the nav links, forms, and other content for toggling
+        #bs-sidebar-navbar-collapse-1.collapse.navbar-collapse
+            ul.nav.navbar-nav
+                li
+                    a(href="/flashcards")
+                        | All Decks
+                        span.pull-right.hidden-xs.showopacity.glyphicon.glyphicon-home(style="font-size:16px;")
+                li
+                    a(href="/flashcards/newdeck")
+                        | New Deck
+                        span.pull-right.hidden-xs.showopacity.glyphicon.glyphicon-send(style="font-size:16px;")
+                        //- span.pull-right.hidden-xs.showopacity.glyphicon.glyphicon-lock(style="font-size:16px;")

@@ -1,0 +1,16 @@
+head
+  include ./partials/_head.pug
+body
+  include ./partials/_nav.pug
+.main
+  include ./partials/_alert.pug
+    .modal-login-right
+      .title-container
+        .modal-title Input your words separated by spaces
+      .form-box
+        .user-edit-box(style='height: 100%;')
+          form#addCardsForm.addCardsForm(action=`/flashcards/${deck._id}/cards`, method='POST', style='width: 80%;')
+            input(type='hidden', name='deck', value= deck._id)
+            textarea.form-control(form='addCardsForm', name='characters', placeholder='中文字', style='height: 150px; width: 75%; font-size:24px')
+            br
+            button#addCardsButton.addCardsButton.btn.btn-info(action='submit', onclick="return confirm('Are you sure?')")  Submit 

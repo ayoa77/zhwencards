@@ -1,0 +1,40 @@
+<html>
+
+<head>
+    include ./partials/_head.pug
+</head>
+
+<body>
+    include ./partials/_nav.pug
+    <div class="main">
+        <!-- Content Here -->
+        include ./partials/_alert.pug
+        .page-header
+          h1  All Decks
+        table.table.table-hover
+          thead
+              tr
+                th Name
+                //- th Tone Practice(future update)
+                th New Cards
+                th Edit
+                th Print
+                th Delete
+          tbody
+            for deck in decks
+              tr
+                td
+                  a(href=`/flashcards/${deck._id} `)  #{deck.title}
+                //- td
+                //-   a(href=`/flashcards/tones/ ${deck._id} `) tone practice (future update!)
+                td
+                  a(href=`/flashcards/${deck._id}/new`) New Cards
+                td
+                  a(href=`/flashcards/edit/${deck._id}`) Edit Cards
+                td
+                  a(href=`/flashcards/print/${deck._id}/${deck.name}`) print
+                td
+                  form.deleteDeckForm(action=`/flashcards/${deck._id}`, method='DELETE', id=`deleteDeckForm${deck._id} `)
+                    button.btn.btn-danger(type='submit') × 
+                //- td
+                //- deck.gramorvocab
