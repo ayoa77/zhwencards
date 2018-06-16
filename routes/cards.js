@@ -25,8 +25,8 @@ router.get('/print/:deckId/:name', function(req,res,next){
     .catch(function (err) {
       req.flash('error', err.message || 'something went wrong, please try again');
       res.redirect('back');
-    })
-  })
+    });
+  });
 // phantom.create(function (error, ph) {
 //   ph.createPage(function (err, page) {
 //     page.set("paperSize", { format: "A4", orientation: 'portrait', margin: '0.3175cm' });

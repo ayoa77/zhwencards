@@ -1,0 +1,8 @@
+{
+  "ignore": {
+    "ejs": {
+      "versions": "2.6.1",
+      "reason": "no longer using ejs"
+    }
+  }
+}
