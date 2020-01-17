@@ -5,6 +5,9 @@ const mongoose = require("mongoose");
 // const cjst = require('../helpers/cjst/lib/cjst');
 const Card = require('../models/cards');
 const Deck = require('../models/deck');
+// const User = require('../models/users')
+const csrf = require('csurf');
+const csrfProtection = csrf({ cookie: true });
 // var dom = require('express-dom')
 // var pdf = require('express-dom-pdf');
 var app = require('express')();
@@ -82,9 +85,9 @@ router.get('/', function(req, res, next) {
     });
 });
 
-router.get('/newdeck',function (req,res,next){
+router.get('/newdeck', csrfProtection, function (req,res,next){
 
-  res.render('newdeck', {title: "Create a Deck!"});
+  res.render('newdeck', { csrfToken: req.csrfToken(), title: "Create a Deck!"});
 
 });
 router.post('/', function (req, res, next) {
@@ -120,7 +123,7 @@ router.post('/', function (req, res, next) {
       });
 });
 
-router.get('/:deckId', function (req, res, next){
+router.get('/:deckId', csrfProtection, function (req, res, next){
   body = {}
   const id = req.params.deckId;
   Deck.findById(id)
@@ -130,33 +133,39 @@ router.get('/:deckId', function (req, res, next){
       body.deck = deck
       console.log("From database", body.deck);
       Card.find({deck: id})
-      .then(card => {
-        body.card = card
+      .then(cards => {
+        body.cards = cards
+        console.log("From database", body.cards);
       if (body) {
         res.render('deck', {
+          csrfToken: req.csrfToken(),
           title: body.deck.title,
           deck: body.deck,
-          card: body.card,
+          cards: body.cards,
 
         });
       } else {
-        // res
-        //   .status(404)
-        //   .json({ message: "No valid entry found for provided ID" });
-        req.flash('error', err.message || 'no vaild entry for provided ID');
-        res.redirect('back');
+        res
+          .status(404)
+          .json({ message: err.message });
+        // req.flash('error', err.message || 'no vaild entry for provided ID');
+        // res.redirect('back');
 
       }
     })
     .catch(err => {
       console.log(err);
-      req.flash('error', err.message || 'something went wrong, please try again');
-      res.redirect('back');
+        res
+          .status(404)
+          .json({ message: err});
+
+      // req.flash('error', err.message || 'something went wrong, please try again');
+      // res.redirect('back');
     });
   })
 })
 
-router.get('/tones/:deckId', function (req, res, next) {
+router.get('/tones/:deckId', csrfProtection, function (req, res, next) {
   body = {}
   const id = req.params.deckId;
   Deck.findById(id)
@@ -170,6 +179,7 @@ router.get('/tones/:deckId', function (req, res, next) {
           body.card = card
           if (body) {
             res.render('deckblack', {
+              csrfToken: req.csrfToken(),
               title: body.deck.title,
               deck: body.deck,
               card: body.card,
@@ -191,7 +201,7 @@ router.get('/tones/:deckId', function (req, res, next) {
     })
 })
 
-router.get('/tones/:deckId', function (req, res, next) {
+router.get('/tones/:deckId', csrfProtection, function (req, res, next) {
   body = {}
   const id = req.params.deckId;
   Deck.findById(id)
@@ -205,6 +215,43 @@ router.get('/tones/:deckId', function (req, res, next) {
           body.card = card
           if (body) {
             res.render('back2back', {
+              csrfToken: req.csrfToken(),
+              title: body.deck.title,
+              deck: body.deck,
+              card: body.card,
+            });
+          } else {
+            // res
+            //   .status(404)
+            //   .json({ message: "No valid entry found for provided ID" });
+            req.flash('error', err.message || 'No valid entry found for provided ID');
+            res.redirect('back');
+
+          }
+        })
+        .catch(err => {
+          console.log(err);
+          req.flash('error', err.message || 'something went wrong, please try again');
+          res.redirect('back');
+        });
+    });
+});
+
+router.get('/tones/:deckId', csrfProtection, function (req, res, next) {
+  body = {}
+  const id = req.params.deckId;
+  Deck.findById(id)
+    // .populate(cards)
+    .exec()
+    .then(deck => {
+      body.deck = deck
+      console.log("From database", body.deck);
+      Card.find({ deck: id })
+        .then(card => {
+          body.card = card
+          if (body) {
+            res.render('back2back', {
+              csrfToken: req.csrfToken(),
               title: body.deck.title,
               deck: body.deck,
               card: body.card,
@@ -226,42 +273,7 @@ router.get('/tones/:deckId', function (req, res, next) {
     })
 })
 
-router.get('/tones/:deckId', function (req, res, next) {
-  body = {}
-  const id = req.params.deckId;
-  Deck.findById(id)
-    // .populate(cards)
-    .exec()
-    .then(deck => {
-      body.deck = deck
-      console.log("From database", body.deck);
-      Card.find({ deck: id })
-        .then(card => {
-          body.card = card
-          if (body) {
-            res.render('back2back', {
-              title: body.deck.title,
-              deck: body.deck,
-              card: body.card,
-            });
-          } else {
-            // res
-            //   .status(404)
-            //   .json({ message: "No valid entry found for provided ID" });
-            req.flash('error', err.message || 'No valid entry found for provided ID');
-            res.redirect('back');
-
-          }
-        })
-        .catch(err => {
-          console.log(err);
-          req.flash('error', err.message || 'something went wrong, please try again');
-          res.redirect('back');
-        });
-    })
-})
-
-router.get('/edit/:deckId', function (req, res, next) {
+router.get('/edit/:deckId', csrfProtection, function (req, res, next) {
   console.log(req.body)
   console.log(req.params)
   body = {}
@@ -294,6 +306,7 @@ const response = {
           // console.log(response)
           if (response) {
             res.render('editcards', {
+              csrfToken: req.csrfToken(),
               title: response.deck.title,
               deck: response.deck,
               cards: response.card
@@ -411,7 +424,7 @@ router.post('/delete/:deckId/:cardId?', function (req, res, next) {
 });
 
 
-router.get('/:deckId/new', function (req, res, next) {
+router.get('/:deckId/new', csrfProtection, function (req, res, next) {
   const id = req.params.deckId;
   Deck.findById(id)
     // .populate(cards)
@@ -420,6 +433,7 @@ router.get('/:deckId/new', function (req, res, next) {
       console.log("From database", doc);
       if (doc) {
         res.render('newcards', {
+          csrfToken: req.csrfToken(),
           title: doc.title,
           deck: doc,
         });

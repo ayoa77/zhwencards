@@ -28,7 +28,7 @@ const User = require("./models/user");
 
 app.use(sessions({
   cookieName: 'session',
-  secret: 'petsRfleeFree123',
+  secret: 'secretsaresercretsAREsecRETS',
   duration: 30 * 60 * 10000,
   activeDuration: 5 * 60 * 1000,
   httpOnly: true,
@@ -58,12 +58,15 @@ app.use(flash());
 
 var indexRouter = require('./routes/index');
 var decksRouter = require('./routes/cards');
+var usersRouter = require('./routes/users');
 
 
 // MODELS
 fs.readdirSync(__dirname + '/models').forEach(function (filename) {
   if (~filename.indexOf('.js')) require(__dirname + '/models/' + filename);
 });
+
+require('./config/passport');
 
 
 app.use(function varsForPug(req, res, next) {
@@ -81,7 +84,7 @@ if ('development' == app.get('env')) {
   app.locals.pretty = true;
 } else if ('production') {
   console.log("you are running in production");
-  mongoose.connect('mongodb://flashcards:companies1234EBS@localhost:27017/flash?authSource=admin')
+  mongoose.connect('mongodb://flashcards:flashes1234567@localhost:27017/flash?authSource=admin')
 };
 
 mongoose.Promise = global.Promise;

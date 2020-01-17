@@ -7,8 +7,8 @@
 <body>
     include ./partials/_nav.pug
     <div class="main">
-        <!-- Content Here -->
         include ./partials/_alert.pug
+        <!-- Content Here -->
         table
             thead
                 tr
@@ -38,9 +38,33 @@
                                     textarea.form-control(type='textarea', form=`editCardForm ${card._id}`, name='definition', rows='3', value=card.definition)
                                         != card.definition
                                 td
-                                    input.form-control.btn-info(type='submit', value='Submit')
+                                    input.form-control.btn-info.submit(type='submit', value='Submit')
                                 td
-                                    form(action=`/flashcards/delete/${deck._id}/${card._id}`, method="POST" id="deleteCardForm")
-                                        button.form-control.btn-danger(type='delete') × 
+                                    button.form-control.btn.btn-danger.delete(deckId=`${deck._id}`, cardId = `${card._id}`, csrf=`${csrfToken}`) × 
+                                    //- form(action=`/flashcards/delete/${deck._id}/${card._id}`, method="POST" id="deleteCardForm")
+
+
+block scripts
+    script(type='text/javascript').
+        $('.delete').on('click',function(){
+            deckId = $(this).attr('deckId');
+            cardId = $(this).attr('cardId');
+            csrf = $(this).attr('csrf');
+            theParent = $(this).parent().parent();
+            p = confirm('Are you sure you want to delete this?')
+                if(p){
+                    $.ajax({
+                    method: 'POST',
+                    data:{"_csrf":csrf,"_id":id},
+                    url: `/flashcards/delete/${deckId}/${cardId}`
+                    }).done(function(msg) {
+                        //- location.reload();
+                        if(msg == 'err'){alert('sorry there was an error, refresh and try again')}else{
+                        theParent.remove();
+                        }
+                    });
+                }   
+        })
+
 
 

@@ -5,7 +5,7 @@ var Schema = mongoose.Schema;
 var cardSchema = new Schema({
     _id: mongoose.Schema.Types.ObjectId,
     
-    deck: [{ type: Schema.Types.ObjectId, ref: 'Deck' }],
+    deck: [{ type: Schema.Types.ObjectId, ref: 'Deck', index: true }],
     
     characters: [String],
     prettypinyin: [String],
